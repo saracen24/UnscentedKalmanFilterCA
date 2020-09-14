@@ -25,6 +25,28 @@ target_link_libraries (${PROJECT_NAME}
     ${OpenCV_LIBS}
 )
 
+target_compile_options (${PROJECT_NAME}
+  PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:
+      -Wall
+      -Wextra
+      -Wpedantic
+      -pedantic-errors
+    >
+    $<$<CXX_COMPILER_ID:MSVC>:
+      /Wall
+      /EHsc
+      /MP
+    >
+    $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Debug>>:
+      /Zi
+      /MDd
+    >
+    $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Release>>:
+      /MD
+    >
+)
+
 set (SOURCE_FILES
   "./src/main.cpp"
   "./src/motion_model.cpp"
